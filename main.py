@@ -1,4 +1,5 @@
 from tkinter import *
+import random
 
 BG_COLOR = "#d2e69c"
 LBL_FONT = ("Century Gothic", 10, "bold")
@@ -62,11 +63,27 @@ password_entry = Entry(form)
 password_entry.grid(column=1, row=3, sticky=EW)
 
 # generate
-gen_button = Button(form, text="Generate")
+def generate():
+    password_entry.delete(0,END)
+    c = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','&','#','{','(','[','-','|','@',')',']','=','+','}','$','£','%','!','?']
+    for i in range(0, 16):
+        password_entry.insert(END,random.choice(c))
+    form.clipboard_clear()
+    form.clipboard_append(password_entry.get())
+
+gen_button = Button(form, text="Generate", command=generate)
 gen_button.grid(column=2, row=3, sticky=EW, padx=10, pady=10)
 
 # add
-add_button = Button(form, text="ADD")
+def save():
+    f = open("passwords.txt","a+")
+    f.write("website:" + website_entry.get() + " / username:" + username_entry.get() + " / password:" + password_entry.get() +"\n")
+    f.close()
+    website_entry.delete(0,END)
+    username_entry.delete(0,END)
+    password_entry.delete(0,END)
+    
+add_button = Button(form, text="ADD", command=save)
 add_button.grid(column=2, row=4, sticky=EW, padx=10, pady=10)
 
 
